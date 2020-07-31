@@ -1,0 +1,23 @@
+{
+  "name": "thezmi/filesys",
+  "description": "Library for base operation with file and directories",
+  "version": "1.0.0",
+  "license": "MIT",
+  "homepage": "https://github.com/theZMI/components__filesys",
+  "authors": [
+    {
+      "name": "theZMI",
+      "homepage": "https://github.com/theZMI",
+      "email": "zmigpost@gmail.com",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php" : ">=7.1"
+  },
+  "autoload": {
+    "files": [
+      "src/FileSys.php"
+    ]
+  }
+}
