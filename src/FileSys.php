@@ -11,7 +11,7 @@ class FileSys
     {
     }
 
-    public static function FilenameSecurity($str)
+    public static function filenameSecurity($str)
     {
         $bad = [
             "../",
@@ -54,14 +54,14 @@ class FileSys
     /**
      * Удаляет каталог с его содержимым
      */
-    public static function DeleteDir($directory)
+    public static function deleteDir($directory)
     {
         $dir = opendir($directory);
         while (($file = readdir($dir))) {
             if (is_file($directory . '/' . $file)) {
                 unlink($directory . '/' . $file);
             } elseif (is_dir($directory . '/' . $file) && ($file != '.') && ($file != '..')) {
-                self::DeleteDir($directory . '/' . $file);
+                self::deleteDir($directory . '/' . $file);
             }
         }
         closedir($dir);
@@ -72,7 +72,7 @@ class FileSys
     /**
      * Создать каталоги по указанному пути
      */
-    public static function MakeDir($path)
+    public static function makeDir($path)
     {
         if (is_dir($path)) {
             return;
@@ -102,16 +102,16 @@ class FileSys
     /**
      * Cоздать и записать содержимое в файл по указанному пути, если каталоги указанные в пути не созданы, то их создадут
      */
-    public static function WriteFile($file, $data, $flgAppend = false)
+    public static function writeFile($file, $data, $flgAppend = false)
     {
-        $file = self::FilenameSecurity($file);
+        $file = self::filenameSecurity($file);
         if (!$flgAppend) {
             if (file_exists($file)) {
                 @unlink($file);
             }
         }
 
-        self::MakeDir(dirname($file));
+        self::makeDir(dirname($file));
         fclose(fopen($file, 'a+b'));
         $f   = fopen($file, $flgAppend ? 'a+b' : 'r+b');
         $ret = fwrite($f, $data);
@@ -124,9 +124,9 @@ class FileSys
     /**
      * Читает файл по переданному пути
      */
-    public static function ReadFile($file)
+    public static function readFile($file)
     {
-        $file = self::FilenameSecurity(trim($file));
+        $file = self::filenameSecurity(trim($file));
 
         if (!strlen(trim($file))) {
             return false;
@@ -158,7 +158,7 @@ class FileSys
      *
      * @return array
      */
-    public static function ReadList($dir)
+    public static function readList($dir)
     {
         if (!is_readable($dir)) {
             return [];
@@ -170,7 +170,7 @@ class FileSys
         while (($f = readdir($hDir)) !== false) {
             if ($f != '.' && $f != '..') {
                 $path     = $dir . $f;
-                $list[$f] = is_dir($path) ? self::ReadList($path) : $path;
+                $list[$f] = is_dir($path) ? self::readList($path) : $path;
             }
         }
         closedir($hDir);
@@ -181,7 +181,7 @@ class FileSys
     /**
      * Возвращает размер файла в виде: Kb Mb Gb
      */
-    public static function Size($file)
+    public static function size($file)
     {
         $size         = sprintf("%u", filesize($file));
         $filesizename = [" Bytes", " Kb", " Mb", " Gb", " Tb", " Pb", " Eb", " Zb", " Yb"];
